@@ -2,7 +2,7 @@ const board = document.querySelectorAll('.square')
 const reset = document.querySelector('header input')
 const message = document.querySelector('footer span')
 let turn = 0
-let moves = [["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""]]
+let moves = []
 let gameOver = false
 
 for (let i = 0; i < board.length; i ++){
@@ -13,12 +13,27 @@ for (let i = 0; i < board.length; i ++){
 
         updateMoves(i, square.innerHTML, parseInt(square.dataset['square']))
 
-        document.querySelector('#winner').innerHTML = checkWin(moves)
+        if (checkTie(moves)){
+            document.querySelector('#winner').innerHTML = "Tie"
+        }else{
+            document.querySelector('#winner').innerHTML = checkWin(moves)
+        }
        }
     })
 }
 const updateMoves = (place,player,points)=> {
     moves[place] = [player,points]
+}
+const checkTie = (arr)=>{
+    let xMoves = arr.filter(a => a[0]=="X")
+    let oMoves = arr.filter(a => a[0]=="O")
+    
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == undefined || null) {
+            return false
+        }
+    }
+    if (row(xMoves) === false && row(oMoves) === false && arr.length === 9) return true
 }
 
 const checkWin = (arr)=> {
@@ -42,8 +57,7 @@ const row = (arr)=>{
                 if (arr[i][1] + arr[j][1] + arr[k][1] === 15) {
                     document.querySelector(`#turn`).innerHTML = "Game Over"
                     return true;
-                  }else {
-                      
+                  }else { 
                       return false
                   }
             }
@@ -51,7 +65,7 @@ const row = (arr)=>{
     }
 }
 const emptyboard = () => {
-    moves = [["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""]]
+    moves = []
     gameOver = false
     document.querySelector(`#turn`).innerHTML = "X"
     document.querySelector(`#winner`).innerHTML = ""
