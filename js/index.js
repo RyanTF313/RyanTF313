@@ -77,22 +77,23 @@ const emptyboard = () => {
 }
 
 const makeSelection = (sel) => {    
-    if (gameOver){
+    if (gameOver || sel.innerHTML !== ''){
         return false
     } 
-    if (sel.innerHTML !== '') return false
-    if (turn === 0){
-        sel.innerHTML = 'X'
-        turn ++
-        document.querySelector(`#turn`).innerHTML = "O"
-        return true
-    }else {
-        sel.innerHTML = 'O'
-        turn --
-        document.querySelector(`#turn`).innerHTML = "X"
-        return true
+    switch (turn) {
+        case 0:
+            sel.innerHTML = 'X'
+            turn ++
+            document.querySelector(`#turn`).innerHTML = "O"
+            break;
+        case 1:
+            sel.innerHTML = 'O'
+            turn --
+            document.querySelector(`#turn`).innerHTML = "X"
+            break;
     }
-    
+    return true
+
 }
 
 reset.addEventListener('click', emptyboard)
